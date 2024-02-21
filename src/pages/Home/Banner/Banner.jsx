@@ -7,9 +7,9 @@ import img5 from "../../../assets/images/banner/5.jpg";
 
 const Banner = () => {
   return (
-    <div className='carousel w-full h-[600px] '>
+    <div className='carousel w-full h-[600px] rounded-lg my-10 '>
       <div id='slide1' className='carousel-item relative  w-full'>
-        <img src={img1} className='w-full bg-cover  h-[600px]' />
+        <img src={img1} className='w-full rounded h-[600px]' />
         <div className='absolute h-full flex items-center  bg-gradient-to-r from-[#151515] to-[rgba(21, 21, 21, 0)] '>
           <div className=' space-y-4 text-white w-1/3 ml-16 '>
             <h2 className='text-6xl font-bold'>
@@ -45,7 +45,7 @@ const Banner = () => {
         </div>
       </div>
       <div id='slide2' className='carousel-item relative  w-full'>
-        <img src={img2} className='w-full bg-cover  h-[600px]' />
+        <img src={img2} className='w-full rounded-sm h-[600px]' />
         <div className='absolute h-full flex items-center  bg-gradient-to-r from-[#151515] to-[rgba(21, 21, 21, 0)] '>
           <div className=' space-y-4 text-white w-1/3 ml-16 '>
             <h2 className='text-6xl font-bold'>
@@ -81,7 +81,7 @@ const Banner = () => {
         </div>
       </div>
       <div id='slide3' className='carousel-item relative  w-full'>
-        <img src={img3} className='w-full bg-cover  h-[600px]' />
+        <img src={img3} className='w-full rounded-sm h-[600px]' />
         <div className='absolute h-full flex items-center  bg-gradient-to-r from-[#151515] to-[rgba(21, 21, 21, 0)] '>
           <div className=' space-y-4 text-white w-1/3 ml-16 '>
             <h2 className='text-6xl font-bold'>
@@ -117,7 +117,7 @@ const Banner = () => {
         </div>
       </div>
       <div id='slide4' className='carousel-item relative  w-full'>
-        <img src={img4} className='w-full bg-cover  h-[600px]' />
+        <img src={img4} className='w-full rounded-sm h-[600px]' />
         <div className='absolute h-full flex items-center  bg-gradient-to-r from-[#151515] to-[rgba(21, 21, 21, 0)] '>
           <div className=' space-y-4 text-white w-1/3 ml-16 '>
             <h2 className='text-6xl font-bold'>
@@ -153,7 +153,7 @@ const Banner = () => {
         </div>
       </div>
       <div id='slide5' className='carousel-item relative  w-full'>
-        <img src={img5} className='w-full bg-cover  h-[600px]' />
+        <img src={img5} className='w-full rounded-sm h-[600px]' />
         <div className='absolute h-full flex items-center  bg-gradient-to-r from-[#151515] to-[rgba(21, 21, 21, 0)] '>
           <div className=' space-y-4 text-white w-1/3 ml-16 '>
             <h2 className='text-6xl font-bold'>
