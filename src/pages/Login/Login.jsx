@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import login from "../../assets/images/login/login.svg";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const Login = () => {
+  const { userLogin } = useContext(AuthContext);
+  const handleUserLogin = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    // const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+    userLogin(email, password)
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
   return (
     <div>
       <div className='hero min-h-screen bg-base-200'>
@@ -12,13 +30,14 @@ const Login = () => {
           </div>
           <div className='card shrink-0 w-full max-w-sm shadow-2xl bg-base-100'>
             <h1 className='text-5xl text-center mt-4 font-bold'>Login now!</h1>
-            <form className='card-body'>
+            <form onSubmit={handleUserLogin} className='card-body'>
               <div className='form-control'>
                 <label className='label'>
                   <span className='label-text'>Email</span>
                 </label>
                 <input
                   type='email'
+                  name='email'
                   placeholder='email'
                   className='input input-bordered'
                   required
@@ -30,6 +49,7 @@ const Login = () => {
                 </label>
                 <input
                   type='password'
+                  name='password'
                   placeholder='password'
                   className='input input-bordered'
                   required

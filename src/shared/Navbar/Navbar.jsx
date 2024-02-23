@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../../../public/logo.svg";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  const handleLogOut = () => {
+    logOut();
+  };
   const navLink = (
-    <>
+    <div div className='flex items-center'>
       <li>
         <Link to='/'>Home</Link>
       </li>
@@ -20,10 +25,19 @@ const Navbar = () => {
       <li>
         <Link>Contact</Link>
       </li>
+      <li className='font-bold mx-2'>{user?.displayName}</li>
       <li>
-        <Link to='login'>Login</Link>
+        {user ? (
+          <div>
+            <Link onClick={handleLogOut} className=' btn-warning'>
+              SignOut
+            </Link>
+          </div>
+        ) : (
+          <Link to='login'>Login</Link>
+        )}
       </li>
-    </>
+    </div>
   );
   return (
     <div className='navbar bg-base-100 font-semibold'>
