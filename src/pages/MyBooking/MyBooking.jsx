@@ -4,20 +4,37 @@ import { TiDelete } from "react-icons/ti";
 
 const MyBooking = () => {
   const { user } = useContext(AuthContext);
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookingData] = useState([]);
   console.log(bookings);
+  // const [bookings, setBookings] = useState(bookingData);
+  // console.log(bookings);
 
   const url = `http://localhost:5000/bookings?email=${user.email}`;
 
   useEffect(() => {
     fetch(url)
       .then((res) => res.json())
-      .then((data) => setBookings(data));
+      .then((data) => setBookingData(data));
   }, []);
+
+  const handleDeleteBooking = (id) => {
+    fetch(`http://localhost:5000/bookings/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.deletedCount > 0) {
+          alert("user delete Successfully");
+          const remaining = bookings.filter((booking) => booking._id !== id);
+          setBookingData(remaining);
+        }
+      });
+  };
   return (
     <div>
       <h4 className='font-bold text-4xl text-center text-[#FF3811]'>
-        My Bookings
+        My Bookings {bookings.length}
       </h4>
 
       <div>
@@ -40,7 +57,10 @@ const MyBooking = () => {
                     {/* <label>
                       <input type='checkbox' className='checkbox' />
                     </label> */}
-                    <button className='text-4xl'>
+                    <button
+                      onClick={() => handleDeleteBooking(booking._id)}
+                      className='text-4xl'
+                    >
                       <TiDelete />
                     </button>
                   </th>
