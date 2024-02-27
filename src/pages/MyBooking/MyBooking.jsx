@@ -1,33 +1,59 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { TiDelete } from "react-icons/ti";
+import { data } from "autoprefixer";
 
 const MyBooking = () => {
   const { user } = useContext(AuthContext);
-  const [bookings, setBookingData] = useState([]);
+  const [bookings, setBookings] = useState([]);
   console.log(bookings);
   // const [bookings, setBookings] = useState(bookingData);
   // console.log(bookings);
 
-  const url = `http://localhost:5000/bookings?email=${user.email}`;
+  const url = `http://localhost:5000/bookings?email=${user?.email}`;
 
   useEffect(() => {
     fetch(url)
       .then((res) => res.json())
-      .then((data) => setBookingData(data));
-  }, []);
+      .then((data) => setBookings(data));
+  }, [url]);
 
   const handleDeleteBooking = (id) => {
+    const confirmed = confirm("Are You Sure To Delete Bookings?");
+    if (confirmed) {
+      fetch(`http://localhost:5000/bookings/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.deletedCount > 0) {
+            // alert("user delete Successfully");
+            const remaining = bookings.filter((booking) => booking._id !== id);
+            setBookings(remaining);
+          }
+        });
+    }
+  };
+
+  const handleBookingConfirm = (id) => {
     fetch(`http://localhost:5000/bookings/${id}`, {
-      method: "DELETE",
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ status: "Confirm" }),
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.deletedCount > 0) {
-          alert("user delete Successfully");
+        if (data.modifiedCount > 0) {
+          alert("order Confirmed");
           const remaining = bookings.filter((booking) => booking._id !== id);
-          setBookingData(remaining);
+          const updatedBooking = bookings.find((booking) => booking._id === id);
+          updatedBooking.status = "Confirm";
+          const newBookings = [updatedBooking, ...remaining];
+          setBookings(newBookings);
         }
       });
   };
@@ -88,9 +114,17 @@ const MyBooking = () => {
                   </td>
                   <td>{booking.date}</td>
                   <th>
-                    <p className='bg-[#FF3811] text-center text-white rounded-xl py-4 text-2xl font-semibold'>
-                      Pending
-                    </p>
+                    {booking.status === "Confirm" ? (
+                      <p className='bg-indigo-400 text-center text-white rounded-xl py-4 px-6 text-2xl font-semibold'>
+                        Confirmed
+                      </p>
+                    ) : (
+                      <button onClick={() => handleBookingConfirm(booking._id)}>
+                        <p className='bg-[#FF3811] text-center text-white rounded-xl py-4 px-6 text-2xl font-semibold'>
+                          Pending
+                        </p>
+                      </button>
+                    )}
                   </th>
                 </tr>
               ))}
