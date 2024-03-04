@@ -2,20 +2,26 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { TiDelete } from "react-icons/ti";
 import { data } from "autoprefixer";
+import axios from "axios";
 
 const MyBooking = () => {
   const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
-  console.log(bookings);
+  // console.log(bookings);
   // const [bookings, setBookings] = useState(bookingData);
   // console.log(bookings);
 
   const url = `http://localhost:5000/bookings?email=${user?.email}`;
 
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setBookings(data));
+    axios.get(url, { withCredentials: true }).then((res) => {
+      console.log("client side my bookings data", res.data);
+      setBookings(res.data);
+    });
+
+    // fetch(url)
+    //   .then((res) => res.json())
+    //   .then((data) => setBookings(data));
   }, [url]);
 
   const handleDeleteBooking = (id) => {
@@ -78,7 +84,7 @@ const MyBooking = () => {
             <tbody>
               {/* row 1 */}
               {bookings.map((booking) => (
-                <tr className='text-2xl font-semibold'>
+                <tr key={booking._id} className='text-2xl font-semibold'>
                   <th>
                     {/* <label>
                       <input type='checkbox' className='checkbox' />

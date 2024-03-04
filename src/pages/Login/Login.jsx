@@ -2,12 +2,13 @@ import React, { useContext } from "react";
 import login from "../../assets/images/login/login.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
+import axios from "axios";
 
 const Login = () => {
   const { userLogin } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(navigate);
+  // console.log(navigate);
   const handleUserLogin = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -19,7 +20,25 @@ const Login = () => {
       .then((result) => {
         const loggedUser = result.user;
         console.log(loggedUser);
-        navigate(location?.state ? location?.state : "/");
+        const user = { email };
+        // navigate(location?.state ? location?.state : "/");
+
+        //access token api
+        axios
+          .post(
+            "http://localhost:5000/jwt",
+            { user },
+            { withCredentials: true }
+          )
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.success) {
+              navigate(location?.state ? location?.state : "/");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error.message);
