@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import axios from "axios";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -28,6 +29,16 @@ const AuthProvider = ({ children }) => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       // console.log(currentUser);
       setUser(currentUser);
+      const loggerEmail = { email: currentUser.email };
+      if (currentUser) {
+        axios
+          .post("http://localhost:5000/jwt", loggerEmail, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            console.log(res.data);
+          });
+      }
       setLoading(false);
     });
     return () => {
